@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  server:
+    container_name: uol-players-api
+    entrypoint: [ "sh", "-c", "java -cp app:app/lib/* br.com.geradordedevs.uolplayers.UolPlayersApplication" ]
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:mysql://uol-players-db:3306/db_uol_players?createDatabaseIfNotExist=true
+      - DATABASE_HOST=db_uol_players
+      - DATABASE_USER=db_uol_players
+      - DATABASE_PASSWORD=123456
+      - DATABASE_NAME=db_uol_players
+      - DATABASE_PORT=3306
+
+    depends_on:
+      - db-uol-players
+
+  db-uol-players:
+    image: mysql:8.0
+    container_name: uol-players-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db_uol_players
+      - MYSQL_USER=db_uol_players
+      - MYSQL_PASSWORD=123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/db:/data/db
+
+
